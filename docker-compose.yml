@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+  node:
+    restart: always
+    image: ethereum/client-go:stable
+    command: --verbosity ${GETH_LOG_LEVEL} --nousb --http --http.addr "0.0.0.0" --http.port "8545" --http.vhosts "node" --mine --miner.etherbase "${ETHERBASE}"
+    ports:
+      - "30303:30303"
+      - "8545"
+    volumes:
+      - ./persistence/ethereum:/root/.ethereum
+      - ./persistence/keystore:/root/.ethereum/keystore
+      - ./persistence/ethash:/root/.ethash
+  ethminer:
+    runtime: nvidia
+    restart: always
+    depends_on:
+      - node
+    build: ethminer/
+    command: ethminer -P http://node:8545
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NODE_URL=http://node:8545
