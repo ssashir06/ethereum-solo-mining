@@ -4,6 +4,7 @@ services:
   node:
     restart: always
     image: ethereum/client-go:stable
+    stop_grace_period: 10m00s
     command: --verbosity ${GETH_LOG_LEVEL} --nousb --http --http.addr "0.0.0.0" --http.port "8545" --http.vhosts "node" --mine --miner.etherbase "${ETHERBASE}"
     ports:
       - "30303:30303"
