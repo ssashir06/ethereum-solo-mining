@@ -1,4 +1,5 @@
-FROM nvidia/cuda:11.1-devel-ubuntu20.04 AS build
+ARG CUDA_VERSION=11.2.0
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu20.04 AS build
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -18,7 +19,7 @@ RUN mkdir build && \
     make && \
     make install
 
-FROM nvidia/cuda:11.1-runtime-ubuntu20.04
+FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu20.04
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get clean
