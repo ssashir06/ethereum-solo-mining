@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get clean
 
 WORKDIR /ethminer-repo
-ARG BRANCH=cuda11
+ARG BRANCH=master
 RUN git clone -b ${BRANCH} https://github.com/ethereum-mining/ethminer.git . && \
     git submodule update --init --recursive
 RUN mkdir build && \
